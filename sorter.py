@@ -25,6 +25,7 @@ import string
 import os
 import subprocess
 import time
+import platform
 
 # Input arguments
 parser = argparse.ArgumentParser(
@@ -56,6 +57,8 @@ args, unparsed = parser.parse_known_args()
 FORMATDICT = {1:['.cr2', '.CR2'], 2:['.cr3', '.CR3'], 3:['.nef', '.NEF'], 4:['.dng', '.DNG'], 5:['.cr3', '.CR3', '.nef', '.NEF', '.cr2', '.CR2']}
 FILEFORMAT = FORMATDICT[5]
 
+pltfrm = platform.system()
+
 ## change the rational string to a float (unused)
 def rational2float(s):
     try:
@@ -86,10 +89,15 @@ for files in filelist:
 newfilenames=dict()
 print('Reading EXIF:.',)
 
+if pltfrm=='Windows':
+    cmd='.\exiftool.exe'
+else:
+    cmd = 'exiftool '
+
 for rawfile in rawfiles:
     #sys.stdout.write('.')
     sys.stdout.flush()
-    output = subprocess.Popen('exiftool -FocalLength -DateTimeOriginal -ExposureTime -FNumber -ISO -CameraTemperature -T ' + rawfile, shell=True, stdout=subprocess.PIPE)
+    output = subprocess.Popen(cmd + '-FocalLength -DateTimeOriginal -ExposureTime -FNumber -ISO -CameraTemperature -T ' + rawfile, shell=True, stdout=subprocess.PIPE)
     file_metadata = output.stdout.read().decode("utf-8").split()
     file_metadata.remove('mm') #remove the mm string from the list
     try:                            # since Nikon cameras do not provide temperature values
