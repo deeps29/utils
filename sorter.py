@@ -90,7 +90,7 @@ newfilenames=dict()
 print('Reading EXIF:.',)
 
 if pltfrm=='Windows':
-    cmd='.\exiftool.exe'
+    cmd='.\exiftool.exe '
 else:
     cmd = 'exiftool '
 
