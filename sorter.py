@@ -97,8 +97,10 @@ else:
 for rawfile in rawfiles:
     #sys.stdout.write('.')
     sys.stdout.flush()
-    fullcmd = cmd + '-FocalLength -DateTimeOriginal -ExposureTime -FNumber -ISO -CameraTemperature -T ' + rawfile
+    # fullcmd = cmd + '-FocalLength -DateTimeOriginal -ExposureTime -FNumber -ISO -CameraTemperature -T ' + rawfile
+    fullcmd = f"{cmd} -FocalLength -DateTimeOriginal -ExposureTime -FNumber -ISO -CameraTemperature -T {rawfile}"
     print(fullcmd)
+
     output = subprocess.Popen(fullcmd, shell=True, stdout=subprocess.PIPE)
     file_metadata = output.stdout.read().decode("utf-8").split()
     file_metadata.remove('mm') #remove the mm string from the list
